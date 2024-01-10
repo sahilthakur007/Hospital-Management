@@ -250,8 +250,10 @@ exports.getAllDoctor = async (req, res) => {
 exports.getListOfPatientForDoctor = async (req, res) => {
 
     try {
-        var hospital = req.body.client.hospital
-        const patients = await Patient.find({ hospital, status: "NOT TREATED" })
+
+        var hospitalId = req.body.client.hospital
+
+        const patients = await Patient.find({ hospitalId, status: "NOT TREATED" })
 
         return res.status(200).json({
             patients,
@@ -299,8 +301,14 @@ exports.savePrescription = async (req, res) => {
     }
     try {
         const savedPrescription = await Prescription.create({
-            patientname, description, diseasename, medicine, treatedBy, patientId, entryDate: new Date(), medicine
+            patientname, description, diseasename, medicine, treatedBy, patientId, entryDate: new Date()
         })
+        var status = "TREATED"
+        await Patient.updateOne({ _id: patientId }, {
+            status
+        })
+
+
         return res.status(200).json({
             savedPrescription,
             success: true
@@ -309,6 +317,7 @@ exports.savePrescription = async (req, res) => {
     }
     catch (e) {
         return res.status(500).json({
+            e,
             message: "Something went wrong",
             success: false
         })

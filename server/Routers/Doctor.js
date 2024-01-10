@@ -9,8 +9,8 @@ Router.route('/update').put(isauthenticatedDoctor, updateDoctor)
 Router.route('/spetilization').get(getDoctorBySpetilization)
 Router.route('/hospital').get(isauthenticatedHospital, getDoctorByHospital)
 Router.route('').get(getAllDoctor)
-Router.route("/getpatientbyhospital").get(isauthenticatedDoctor, getListOfPatientForDoctor)
+Router.route("/getpatientfordoctor").get(isauthenticatedDoctor, getListOfPatientForDoctor)
 Router.route("/single-patient/:patientid").get(isauthenticatedDoctor, getSinglePatientForDoctor)
-Router.route("/save-prescription/:patientid").get(isauthenticatedDoctor, savePrescription)
+Router.route("/save-prescription/:patientid").post(isauthenticatedDoctor, savePrescription)
 
 module.exports = Router  
